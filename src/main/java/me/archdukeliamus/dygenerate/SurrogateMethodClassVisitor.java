@@ -123,7 +123,7 @@ final class SurrogateMethodAnnotationVisitor extends AnnotationVisitor {
 				tokeniser.tokenise(); // throws
 				List<Token> tokens = tokeniser.getOutput();
 				Parser parser = new Parser(tokens);
-				bootstrapData = parser.parseBootstrapData(BootstrapType.INVOKEDYNAMIC); // throws
+				bootstrapData = parser.parseBootstrapData(type); // throws
 			}
 			parent.getSurrogates().put(new Surrogate(methodName,methodDescriptor), bootstrapData);
 		}
