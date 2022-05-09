@@ -1,6 +1,5 @@
 package me.archdukeliamus.dygenerate;
 
-import java.util.List;
 import java.util.Map;
 
 import org.objectweb.asm.ClassVisitor;
@@ -107,7 +106,7 @@ final class DynamicTransformMethodVisitor extends MethodVisitor {
 						Type invokingDescriptor = Type.getMethodType(descriptor);
 						Type[] invokingArgs = invokingDescriptor.getArgumentTypes();
 						Type[] fixedArgs = new Type[invokingArgs.length + 1];
-						Type thisClass = Type.getType(parent.getClassFQCN());
+						Type thisClass = Type.getObjectType(parent.getClassFQCN());
 						fixedArgs[0] = thisClass;
 						System.arraycopy(invokingArgs, 0, fixedArgs, 1, invokingArgs.length);
 						String fixedDescriptor = Type.getMethodDescriptor(invokingDescriptor.getReturnType(), fixedArgs);

@@ -6,33 +6,30 @@ import java.util.Objects;
 import org.objectweb.asm.Handle;
 import org.objectweb.asm.Opcodes;
 
+/**
+ * A description of bootstrapping data needed for invokedynamic or dynamic constants.
+ *
+ */
 public final class BootstrapData {
 	private final BootstrapType type;
 	private final Handle bootstrapHandle;
 	private final Object[] bootstrapArgs;
 
-	public BootstrapData(BootstrapType type, Handle bootstrapHandle, Object[] bootstrapArgs) {
+	BootstrapData(BootstrapType type, Handle bootstrapHandle, Object[] bootstrapArgs) {
 		this.type = type;
 		this.bootstrapHandle = bootstrapHandle;
 		this.bootstrapArgs = bootstrapArgs;
 	}
 	
-	public BootstrapData(BootstrapType type, String payload) {
-		this.type = type;
-		this.bootstrapArgs = new Object[0];
-		String tempDesc = "(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;";
-		this.bootstrapHandle = new Handle(Opcodes.H_INVOKESTATIC, "me/archdukeliamus/nouse/Unimplemented", "nop", tempDesc, false);
-	}
-	
-	public BootstrapType getType() {
+	BootstrapType getType() {
 		return type;
 	}
 	
-	public Handle getBootstrapHandle() {
+	Handle getBootstrapHandle() {
 		return bootstrapHandle;
 	}
 	
-	public Object[] getBootstrapArgs() {
+	Object[] getBootstrapArgs() {
 		return bootstrapArgs;
 	}
 	
@@ -44,7 +41,7 @@ public final class BootstrapData {
 		sb.append(" ");
 		sb.append(bootstrapHandle);
 		sb.append(",");
-		sb.append(bootstrapArgs);
+		sb.append(Arrays.toString(bootstrapArgs));
 		sb.append("}");
 		return sb.toString();
 	}

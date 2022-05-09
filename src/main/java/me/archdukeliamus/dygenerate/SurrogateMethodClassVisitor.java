@@ -1,15 +1,17 @@
 package me.archdukeliamus.dygenerate;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 
 /**
  * Find all methods marked with indy or condy annotations and extract their annotation data
- * @author archd
  *
  */
 final class SurrogateMethodClassVisitor extends ClassVisitor {
@@ -39,7 +41,6 @@ final class SurrogateMethodClassVisitor extends ClassVisitor {
 
 /**
  * Method visitor.
- * @author archd
  *
  */
 final class SurrogateMethodMethodVisitor extends MethodVisitor {
@@ -65,7 +66,18 @@ final class SurrogateMethodMethodVisitor extends MethodVisitor {
 		// check for indy
 		if (annoDescriptor.equals("Lme/archdukeliamus/dygenerate/InvokeDynamic;")) {
 			// create anno visitor and pass method data down
-			return new SurrogateMethodIndyAnnotationVisitor(api, parent, access, name, descriptor);
+			return new SurrogateMethodAnnotationVisitor(api, parent, access, name, descriptor, BootstrapType.INVOKEDYNAMIC);
+		} else if (annoDescriptor.equals("Lme/archdukeliamus/dygenerate/ConstantDynamic;")) {
+			// run checks to see if condy could actually apply here
+			// method must have no args + static
+			if ((access & Opcodes.ACC_STATIC) != Opcodes.ACC_STATIC) {
+				throw new ClassTransformException("method " + name + ":" + descriptor + " must be static for type ConstantDynamic");
+			}
+			if (Type.getMethodType(descriptor).getArgumentTypes().length > 0) {
+				throw new ClassTransformException("method " + name + ":" + descriptor + " must not have arguments for type ConstantDynamic");
+			}
+			// create anno visitor
+			return new SurrogateMethodAnnotationVisitor(api, parent, access, name, descriptor, BootstrapType.CONSTANTDYNAMIC);
 		} else {
 			// signal don't care
 			return null;
@@ -75,22 +87,24 @@ final class SurrogateMethodMethodVisitor extends MethodVisitor {
 
 /**
  * Visitor for an annotation.
- * @author archd
  *
  */
-final class SurrogateMethodIndyAnnotationVisitor extends AnnotationVisitor {
+final class SurrogateMethodAnnotationVisitor extends AnnotationVisitor {
 	private final SurrogateMethodClassVisitor parent;
 	// info about the current method... again
 	private final int methodAccess;
 	private final String methodName;
 	private final String methodDescriptor;
+	// which bootstrap type to create
+	private final BootstrapType type;
 	
-	SurrogateMethodIndyAnnotationVisitor(int api, SurrogateMethodClassVisitor parent, int access, String name, String descriptor) {
+	SurrogateMethodAnnotationVisitor(int api, SurrogateMethodClassVisitor parent, int access, String name, String descriptor, BootstrapType annoType) {
 		super(api);
 		this.parent = parent;
 		this.methodAccess = access;
 		this.methodName = name;
 		this.methodDescriptor = descriptor;
+		this.type = annoType;
 	}
 	
 	/**
@@ -102,8 +116,16 @@ final class SurrogateMethodIndyAnnotationVisitor extends AnnotationVisitor {
 			// it's the value, so let's finally upcall to add surrogate info
 			// needs check for nonstatic call
 			String payload = (String) value;
-			parent.getSurrogates().put(new Surrogate(methodName,methodDescriptor), new BootstrapData(BootstrapType.INVOKEDYNAMIC, payload));
-			System.out.println("Got surrogate " + methodName + ":" + methodDescriptor + " acc: " + methodAccess + " bs: " + payload);
+			// Parse the data
+			BootstrapData bootstrapData;
+			{
+				Tokeniser tokeniser = new Tokeniser(payload);
+				tokeniser.tokenise(); // throws
+				List<Token> tokens = tokeniser.getOutput();
+				Parser parser = new Parser(tokens);
+				bootstrapData = parser.parseBootstrapData(BootstrapType.INVOKEDYNAMIC); // throws
+			}
+			parent.getSurrogates().put(new Surrogate(methodName,methodDescriptor), bootstrapData);
 		}
 	}
 }
