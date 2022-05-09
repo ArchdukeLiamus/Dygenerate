@@ -1,4 +1,5 @@
 plugins {
+	id 'com.github.johnrengelman.shadow' version '7.1.2'
     id 'application'
 }
 
@@ -11,10 +12,5 @@ dependencies {
 }
 
 application {
-    mainClass = 'me.archdukeliamus.dygenerate.App'
-}
-
-tasks.named('test') {
-    // Use JUnit Platform for unit tests.
-    useJUnitPlatform()
+    mainClass = 'me.archdukeliamus.dygenerate.Main'
 }
