@@ -181,7 +181,7 @@ class Tokeniser {
 				default:
 					if (Character.isWhitespace(charHere())) {
 						clearBuffer();
-						while (Character.isWhitespace(charHere())) {
+						while (remaining() && Character.isWhitespace(charHere())) {
 							advance(1);
 						}
 						break;

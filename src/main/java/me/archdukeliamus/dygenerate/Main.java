@@ -60,6 +60,7 @@ public class Main {
 			bytecode = transformBytecodes(bytecode);
 		} catch (ClassTransformException ex) {
 			System.out.println(path + ": problem transforming bytecode: " + ex.getMessage());
+			ex.printStackTrace();
 			return;
 		}
 		try {
@@ -68,12 +69,13 @@ public class Main {
 			System.out.println(path + ": I/O problem on write");
 			return;
 		}
+		System.out.println("transformed " + path);
 	}
 	
 	private static void transformDirectory(Path path) {
 		DirectoryStream<Path> dstream;
 		try {
-			 dstream = Files.newDirectoryStream(path, "*.class");
+			 dstream = Files.newDirectoryStream(path);
 		} catch (IOException ex) {
 			System.out.println(path + ": cannot open directory");
 			return;
@@ -81,7 +83,7 @@ public class Main {
 		for (Path subpath : dstream) {
 			if (Files.isDirectory(subpath)) {
 				transformDirectory(subpath);
-			} else {
+			} else if (subpath.getFileName().toString().endsWith(".class")) {
 				transformFile(subpath);
 			}
 		}
@@ -91,6 +93,7 @@ public class Main {
 			System.out.println(path + ": cannot close directory?");
 			return;
 		}
+		System.out.println("transformed directory " + path);
 	}
 	
 	private static void usage() {
