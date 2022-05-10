@@ -44,9 +44,7 @@ public final class BootstrapData {
 			Parser parser = new Parser(tokens);
 			BootstrapData bootstrapData = parser.parseBootstrapData(type); // throws
 			return bootstrapData;
-		} catch (TokeniserError ex) {
-			throw new InvalidBootstrapDataException(ex.getMessage());
-		} catch (ParserError ex) {
+		} catch (TokeniserError | ParserError ex) {
 			throw new InvalidBootstrapDataException(ex.getMessage());
 		}
 	}
