@@ -89,12 +89,32 @@
  * 	<li>where <i>bsname</i> is the identifier name of the bootstrap method to be invoked
  * 	<li>where <i>bsmtype</i> is an internal method type descriptor of the bootstrap method to be invoked (for example
  * 		<code>(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;</code>)
- * 	<li>where <i>args...</i> is an optional list of static arguments to be passed to the bootstrap method
+ * 	<li>where <i>args...</i> is an optional comma-seperated list of static arguments to be passed to the bootstrap method
  * </ul>
  * In the case of a method with no static arguments, the braces may be elided.
  * 
+ * <h3>Argument Types</h3>
  * 
- * <br>
+ * Static arguments may be any of the nine permitted types: integer, long, float, double, string, class, method handle, method type, or dynamic constant.
+ * 
+ * <h4>Integers and Longs</h4>
+ * 
+ * Integer and long literals are defined similarly to the JLS, except underscores are not permitted and octal is not allowed. Use <code>0x</code> or
+ * <code>0X</code> to start hexadecimal literals. Affix <code>L</code> or <code>l</code> for long literals.
+ * 
+ * <h4>Floats and Doubles</h4>
+ * 
+ * Float and double literals use a more restricted syntax compared to the JLS that reduces the amount of edge cases to be handled by the tokeniser.
+ * There are no leading zeroes, except for when the integral part of the literal is zero (<code>0.123456</code>). The fractional part of the literal
+ * is always required, even for integral values (for example <code>1.0</code>). The exponent is optional and works as in the JLS. Hexadecimal
+ * floating-point literals are not supported. Affix <code>f</code> or <code>F</code> for float literals or optionally <code>d</code> or <code>D</code>
+ * for double literals.
+ * 
+ * <h4>Strings</h4>
+ * 
+ * Strings are defined in double quotes and accept the usual escape sequences. Unicode escapes are not supported but these are replaced by
+ * <code>javac</code> in source before Dygenerate receives them. Text blocks are not supported.
+ * 
  * 
  */
 package me.archdukeliamus.dygenerate;
