@@ -105,7 +105,7 @@ class Tokeniser {
 	 * @param message
 	 */
 	private void emitError(String message) {
-		throw new TokeniserError(message + "(char " + globalCharIndex + ")",globalCharIndex);
+		throw new TokeniserError(message + " (char " + globalCharIndex + ")",globalCharIndex);
 	}
 	
 	/**

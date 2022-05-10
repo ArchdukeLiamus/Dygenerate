@@ -117,14 +117,7 @@ final class SurrogateMethodAnnotationVisitor extends AnnotationVisitor {
 			// needs check for nonstatic call
 			String payload = (String) value;
 			// Parse the data
-			BootstrapData bootstrapData;
-			{
-				Tokeniser tokeniser = new Tokeniser(payload);
-				tokeniser.tokenise(); // throws
-				List<Token> tokens = tokeniser.getOutput();
-				Parser parser = new Parser(tokens);
-				bootstrapData = parser.parseBootstrapData(type); // throws
-			}
+			BootstrapData bootstrapData = BootstrapData.fromString(type, payload);
 			parent.getSurrogates().put(new Surrogate(methodName,methodDescriptor), bootstrapData);
 		}
 	}
