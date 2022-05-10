@@ -16,7 +16,7 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
 
-public class Main {
+public class Dygenerate {
 	public static void main(String[] args) throws IOException {
 		System.out.println("Dygenerate v0.0.1");
 		if (args.length == 0) {

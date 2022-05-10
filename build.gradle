@@ -12,5 +12,5 @@ dependencies {
 }
 
 application {
-    mainClass = 'me.archdukeliamus.dygenerate.Main'
+    mainClass = 'me.archdukeliamus.dygenerate.Dygenerate'
 }
