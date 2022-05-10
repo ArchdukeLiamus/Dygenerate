@@ -1,6 +1,6 @@
 /**
- * The <code>me.archdukeliamus.dygenerate</code> package describes the Dygenerate utility for inserting <code>invokedynamic</code> and
- * dynamic constant <code>ldc</code> opcodes into Java (or any other JVM language) source code. Insertion is accomplished through three parts:
+ * The <code>me.archdukeliamus.dygenerate</code> package describes the Dygenerate utility for inserting <code>invokedynamic</code> (indy) and
+ * dynamic constant (condy) <code>ldc</code> opcodes into Java (or any other JVM language) source code. Insertion is accomplished through three parts:
  * <ul>
  * 	<li>The declaration and use of <i>surrogate methods</i>
  * 	<li>The annotation of those surrogate method declarations with <i>bootstrap data</i>
@@ -36,6 +36,8 @@
  * <code>abstract</code> if the context permits; the only criterion is that the compiler is able to emit calls (or equivalent JVM method call instructions)
  * to the surrogate method. The recommended body of a surrogate method is to throw an unchecked exception; alternatively, a fallback implementation could
  * be provided.
+ * <br><br>
+ * Generics are permitted in surrogate methods; the standard rules of type erasure apply.
  * 
  * <h3>invokedynamic Surrogate Methods</h3>
  * 
@@ -48,13 +50,19 @@
  * class and will receive the value that would have been <code>this</code>. The remaining arguments are passed as normal, mirroring a
  * <code>invokespecial</code> or <code>invokevirtual</code> call.
  * <br><br>
- * For example, if the declaring class is com.example.MyClass, <code>private int surrogate(int x, int y)</code> produces descriptor
+ * For example, if the declaring class is <code>com.example.MyClass</code>, method <code>private int surrogate(int x, int y)</code> produces descriptor
  * <code>surrogate:(Lcom/example/MyClass;II)I</code>.
  * <br><br>
  * Static surrogate methods copy the method descriptor of the surrogate method they replace directly and better reflect the behavior of
  * <code>invokedynamic</code>. They mirror an <code>invokestatic</code> call.
  * <br><br>
- * For example, <code>private static int surrogate(int x, int y)</code> produces descriptor
- * <code>surrogate:(II)I</code>.
+ * For example, method <code>private static int surrogate(int x, int y)</code> produces descriptor <code>surrogate:(II)I</code>.
+ * 
+ * <h3>Dynamic Constant Surrogate Methods</h3>
+ * 
+ * Surrogate methods for dynamic constants are far more restricted in terms of access modifiers and method signatures. Condy surrogates must be
+ * declared <code>static</code> and must not take any arguments. The return type of the surrogate method informs the type of the constant to be loaded.
+ * This reflects the "call shape" of an <code>ldc</code> instruction, which does not "take arguments" and pushes a single "return value" to the operand
+ * stack.
  */
 package me.archdukeliamus.dygenerate;
