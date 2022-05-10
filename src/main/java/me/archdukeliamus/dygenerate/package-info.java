@@ -78,7 +78,7 @@
  * <br><br>
  * The basic syntax is as follows:
  * <br><br>
- * <i>invoketype</i> <i>bsclass</i><code>.</code><i>bsname</i><code>:</code><i>bsmtype</i> [<code>{</code> <i>args...</i> <code>}</code>]
+ * <i>invoketype</i> [<code>interface</code>] [<code>class</code>] <i>bsclass</i><code>.</code><i>bsname</i><code>:</code><i>bsmtype</i> [<code>{</code> <i>args...</i> <code>}</code>]
  * <br>
  * <ul>
  *  <li>where <i>invoketype</i> is one of <code>getfield</code>, <code>putfield</code>, <code>getstatic</code>, <code>putstatic</code>, 
@@ -91,11 +91,15 @@
  * 		<code>(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;</code>)
  * 	<li>where <i>args...</i> is an optional comma-seperated list of static arguments to be passed to the bootstrap method
  * </ul>
- * In the case of a method with no static arguments, the braces may be elided.
+ * Items in brackets [ ] are optional.
+ * <br>
+ * If <i>bsclass</i> refers to an interface type, <code>interface</code> must be present. <code>class</code> is also allowed for consistency. While
+ * redundant and verbose, <code>interface class</code> is also permissible. In the case of a method with no static arguments, the braces may be elided.
+ * The arguments are passed as-is and no type conversions are performed.
  * 
  * <h3>Argument Types</h3>
  * 
- * Static arguments may be any of the nine permitted types: integer, long, float, double, string, class, method handle, method type, or dynamic constant.
+ * Static arguments may be any of the nine permitted types: integer, long, float, double, string, class, method type, method handle, or dynamic constant.
  * 
  * <h4>Integers and Longs</h4>
  * 
@@ -115,6 +119,14 @@
  * Strings are defined in double quotes and accept the usual escape sequences. Unicode escapes are not supported but these are replaced by
  * <code>javac</code> in source before Dygenerate receives them. Text blocks are not supported.
  * 
+ * <h4>Class Literals</h4>
  * 
+ * Class literals are defined as <code>class</code> <i>classfqcn</i>, where <i>classfqcn</i> is the internal class FQCN of the class to be
+ * referenced (for example <code>com/example/MyClass</code>). Arrays may be referred to by their own FQCNs, including arrays of primitives.
+ * Primitive types are not permitted as in the JVMS.
+ * 
+ * <h4>Method Type Literals</h4>
+ * 
+ * Method type literals are defined as <code>methodtype</code> <i>mtype</i>, where <i>mtype</i> is a method descriptor.
  */
 package me.archdukeliamus.dygenerate;
