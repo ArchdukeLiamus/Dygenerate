@@ -27,6 +27,7 @@ public class Main {
 	}
 	
 	private static void commandLineTransform(String... args) {
+		boolean errors = false;
 		for (String arg : args) {
 			Path path;
 			try {
@@ -37,63 +38,72 @@ public class Main {
 			}
 			
 			if (Files.isDirectory(path)) {
-				transformDirectory(path);
+				errors = errors | transformDirectory(path);
 			} else {
-				transformFile(path);
+				errors = errors | transformFile(path);
 			}
+		}
+		if (errors) {
+			System.out.println("Processing finished with errors");
+			System.exit(1);
+		} else {
+			System.exit(0);
 		}
 	}
 	
-	private static void transformFile(Path path) {
+	private static boolean transformFile(Path path) {
 		if (!Files.isReadable(path)) {
 			System.out.println(path + ": not readable");
-			return;
+			return true;
 		}
 		byte[] bytecode;
 		try {
 			bytecode = Files.readAllBytes(path);
 		} catch (IOException ex) {
 			System.out.println(path + ": I/O problem on read");
-			return;
+			return true;
 		}
 		try {
 			bytecode = transformBytecodes(bytecode);
 		} catch (ClassTransformException ex) {
 			System.out.println(path + ": problem transforming bytecode: " + ex.getMessage());
 			ex.printStackTrace();
-			return;
+			return true;
 		}
 		try {
 			Files.write(path, bytecode);
 		} catch (IOException ex) {
 			System.out.println(path + ": I/O problem on write");
-			return;
+			return true;
 		}
 		System.out.println("transformed " + path);
+		return false;
 	}
 	
-	private static void transformDirectory(Path path) {
+	private static boolean transformDirectory(Path path) {
+		boolean errors = false;
 		DirectoryStream<Path> dstream;
 		try {
 			 dstream = Files.newDirectoryStream(path);
 		} catch (IOException ex) {
 			System.out.println(path + ": cannot open directory");
-			return;
+			return true;
 		}
 		for (Path subpath : dstream) {
 			if (Files.isDirectory(subpath)) {
-				transformDirectory(subpath);
+				errors = errors | transformDirectory(subpath);
 			} else if (subpath.getFileName().toString().endsWith(".class")) {
-				transformFile(subpath);
+				errors = errors | transformFile(subpath);
 			}
 		}
 		try {
 			dstream.close();
 		} catch (IOException ex) {
 			System.out.println(path + ": cannot close directory?");
-			return;
+			return true;
 		}
 		System.out.println("transformed directory " + path);
+		return errors;
 	}
 	
 	private static void usage() {
