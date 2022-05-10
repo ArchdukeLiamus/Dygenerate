@@ -38,6 +38,9 @@
  * be provided.
  * <br><br>
  * Generics are permitted in surrogate methods; the standard rules of type erasure apply.
+ * <br><br>
+ * Surrogate methods may declare checked exceptions, though they have no effect on the output. In any case, such declarations are ignored by the JVM
+ * and Dygenerate.
  * 
  * <h3>invokedynamic Surrogate Methods</h3>
  * 
@@ -64,5 +67,34 @@
  * declared <code>static</code> and must not take any arguments. The return type of the surrogate method informs the type of the constant to be loaded.
  * This reflects the "call shape" of an <code>ldc</code> instruction, which does not "take arguments" and pushes a single "return value" to the operand
  * stack.
+ * 
+ * <h2>Bootstrap Data Annotations</h2>
+ * 
+ * Surrogate methods are marked with one of either the {@link me.archdukeliamus.dygenerate.InvokeDynamic} or
+ * {@link me.archdukeliamus.dygenerate.ConstantDynamic} annotations declaring the surrogate method's presence, type, and information about the bootstrap
+ * method used to bootstrap the <code>invokedynamic</code> call site or dynamic constant. Information about the bootstrap method and any static arguments
+ * are specified through the value string of the annotation according to a defined syntax. Bootstrap methods referenced by these annotations may take any
+ * form allowed by the Java Virtual Machine Specification and may be in any class.
+ * <br><br>
+ * The basic syntax is as follows:
+ * <br><br>
+ * <i>invoketype</i> <i>bsclass</i><code>.</code><i>bsname</i><code>:</code><i>bsmtype</i> [<code>{</code> <i>args...</i> <code>}</code>]
+ * <br>
+ * <ul>
+ *  <li>where <i>invoketype</i> is one of <code>getfield</code>, <code>putfield</code>, <code>getstatic</code>, <code>putstatic</code>, 
+ * 		<code>invokevirtual</code>, <code>invokestatic</code>, <code>invokespecial</code>, <code>newinvokespecial</code>, or <code>invokeinterface</code>
+ * 		according to the JVMS
+ * 	<li>where <i>bsclass</i> is the internal fully-qualified class name (FQCN) of the class containing the bootstrap method (for example
+ * 		<code>com/example/MyClass</code>)
+ * 	<li>where <i>bsname</i> is the identifier name of the bootstrap method to be invoked
+ * 	<li>where <i>bsmtype</i> is an internal method type descriptor of the bootstrap method to be invoked (for example
+ * 		<code>(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;</code>)
+ * 	<li>where <i>args...</i> is an optional list of static arguments to be passed to the bootstrap method
+ * </ul>
+ * In the case of a method with no static arguments, the braces may be elided.
+ * 
+ * 
+ * <br>
+ * 
  */
 package me.archdukeliamus.dygenerate;
