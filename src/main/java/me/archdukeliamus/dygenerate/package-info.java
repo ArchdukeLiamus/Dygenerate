@@ -64,9 +64,9 @@
  * <h3>Dynamic Constant Surrogate Methods</h3>
  * 
  * Surrogate methods for dynamic constants are far more restricted in terms of access modifiers and method signatures. Condy surrogates must be
- * declared <code>static</code> and must not take any arguments. The return type of the surrogate method informs the type of the constant to be loaded.
- * This reflects the "call shape" of an <code>ldc</code> instruction, which does not "take arguments" and pushes a single "return value" to the operand
- * stack.
+ * declared <code>static</code> and must not take any arguments. The name of the surrogate method is used as the name of the loaded constant.
+ * The return type of the surrogate method informs the type of the constant to be loaded. This reflects the "call shape" of an <code>ldc</code> instruction,
+ * which does not "take arguments" and pushes a single "return value" to the operand stack.
  * 
  * <h2>Bootstrap Data Annotations</h2>
  * 
@@ -87,7 +87,7 @@
  * 	<li>where <i>bsclass</i> is the internal fully-qualified class name (FQCN) of the class containing the bootstrap method (for example
  * 		<code>com/example/MyClass</code>)
  * 	<li>where <i>bsname</i> is the identifier name of the bootstrap method to be invoked
- * 	<li>where <i>bsmtype</i> is an internal method type descriptor of the bootstrap method to be invoked (for example
+ * 	<li>where <i>bsmtype</i> is the internal method type descriptor of the bootstrap method to be invoked (for example
  * 		<code>(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;</code>)
  * 	<li>where <i>args...</i> is an optional comma-seperated list of static arguments to be passed to the bootstrap method
  * </ul>
@@ -116,7 +116,7 @@
  * 
  * <h4>Strings</h4>
  * 
- * Strings are defined in double quotes and accept the usual escape sequences. Unicode escapes are not supported but these are replaced by
+ * Strings are defined in double quotes and accept the usual escape sequences. Unicode escapes are not handled by Dygenerate but these are replaced by
  * <code>javac</code> in source before Dygenerate receives them. Text blocks are not supported.
  * 
  * <h4>Class Literals</h4>
@@ -128,5 +128,47 @@
  * <h4>Method Type Literals</h4>
  * 
  * Method type literals are defined as <code>methodtype</code> <i>mtype</i>, where <i>mtype</i> is a method descriptor.
+ * 
+ * <h4>Method Handle Literals</h4>
+ * 
+ * Method handle literals are defined as:
+ * <br><br>
+ * <code>handle</code> <i>invoketype</i> [<code>interface</code>] [<code>class</code>] <i>hclass</i><code>.</code><i>hname</i><code>:</code><i>hmtype</i>
+ * <br>
+ * <ul>
+ *  <li>where <i>invoketype</i> is one of <code>getfield</code>, <code>putfield</code>, <code>getstatic</code>, <code>putstatic</code>, 
+ * 		<code>invokevirtual</code>, <code>invokestatic</code>, <code>invokespecial</code>, <code>newinvokespecial</code>, or <code>invokeinterface</code>
+ * 		describing the method's invocation behavior according to the JVMS
+ * 	<li>where <i>hclass</i> is the internal FQCN of the class containing the method
+ * 	<li>where <i>hname</i> is the identifier name of the method
+ * 	<li>where <i>hmtype</i> is the internal method type descriptor of the method
+ * </ul>
+ * Items in brackets [ ] are optional.
+ * <br>
+ * If <i>hclass</i> refers to an interface type, <code>interface</code> must be present. <code>class</code> is optional.
+ * 
+ * <h4>Dynamic Constant Literals</h4>
+ * 
+ * Dynamic constant literals are defined as:
+ * <br><br>
+ * <code>condy</code> <i>name</i><code>:</code><i>ctype</i><code>:</code><i>invoketype</i> [<code>interface</code>] [<code>class</code>] <i>bsclass</i><code>.</code><i>bsname</i><code>:</code><i>bsmtype</i> [<code>{</code> <i>args...</i> <code>}</code>]
+ * <br>
+ * <ul>
+ * 	<li>where <i>name</i> is an identifier name describing this constant
+ * 	<li>where <i>ctype</i> is a field descriptor representing the type of the constant
+ *  <li>where <i>invoketype</i> is one of <code>getfield</code>, <code>putfield</code>, <code>getstatic</code>, <code>putstatic</code>, 
+ * 		<code>invokevirtual</code>, <code>invokestatic</code>, <code>invokespecial</code>, <code>newinvokespecial</code>, or <code>invokeinterface</code>
+ * 		describing the bootstrap method's invocation behavior according to the JVMS
+ * 	<li>where <i>bsclass</i> is the internal fully-qualified class name (FQCN) of the class containing the bootstrap method
+ * 	<li>where <i>bsname</i> is the identifier name of the bootstrap method to be invoked
+ * 	<li>where <i>bsmtype</i> is the internal method type descriptor of the bootstrap method to be invoked
+ * 	<li>where <i>args...</i> is an optional comma-seperated list of static arguments to be passed to the bootstrap method
+ * </ul>
+ * Items in brackets [ ] are optional.
+ * <br>
+ * If <i>bsclass</i> refers to an interface type, <code>interface</code> must be present. <code>class</code> is optional. Braces may be elided if
+ * the bootstrap method has no static arguments to be passed. According to the JVMS, the return type of <i>bsmtype</i> must be assignable to <i>ctype</i>.
+ * The static arguments may be any argument type, including arguments that are themselves dynamic constants. These may be nested to an implementation
+ * and environment dependent depth.
  */
 package me.archdukeliamus.dygenerate;
