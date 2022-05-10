@@ -16,8 +16,22 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
 
+/**
+ * Main entry point into Dygenerate and its API.
+ *
+ */
 public class Dygenerate {
-	public static void main(String[] args) throws IOException {
+	
+	/**
+	 * No instantiation for you.
+	 */
+	private Dygenerate() {}
+	
+	/**
+	 * Command-line invocation.
+	 * @param args Command-line aeguments.
+	 */
+	public static void main(String[] args) {
 		System.out.println("Dygenerate v0.0.1");
 		if (args.length == 0) {
 			usage();
@@ -107,11 +121,12 @@ public class Dygenerate {
 	}
 	
 	private static void usage() {
-		System.out.println("Usage: <classfile/bindir> ...");
+		System.out.println("Usage: <classfiles/dirs> ...");
 	}
 	
 	/**
-	 * Transform the provided bytecode, replacing invokedynamic surrogate methods with invokedynamic instructions, removing the surrogates and their annotations.
+	 * Transform the provided bytecode, replacing invokedynamic surrogate methods with invokedynamic instructions, removing the
+	 * surrogates and their annotations.
 	 * @param classBytecode the bytecode to transform
 	 * @throws ClassTransformException if there is a problem transforming the class
 	 * @return the transformed bytecode
