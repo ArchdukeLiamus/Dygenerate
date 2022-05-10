@@ -151,7 +151,8 @@
  * 
  * Dynamic constant literals are defined as:
  * <br><br>
- * <code>condy</code> <i>name</i><code>:</code><i>ctype</i><code>:</code><i>invoketype</i> [<code>interface</code>] [<code>class</code>] <i>bsclass</i><code>.</code><i>bsname</i><code>:</code><i>bsmtype</i> [<code>{</code> <i>args...</i> <code>}</code>]
+ * <code>condy</code> <i>name</i><code>:</code><i>ctype</i><code>:</code><i>invoketype</i> [<code>interface</code>] [<code>class</code>]
+ * <i>bsclass</i><code>.</code><i>bsname</i><code>:</code><i>bsmtype</i> [<code>{</code> <i>args...</i> <code>}</code>]
  * <br>
  * <ul>
  * 	<li>where <i>name</i> is an identifier name describing this constant
@@ -159,7 +160,7 @@
  *  <li>where <i>invoketype</i> is one of <code>getfield</code>, <code>putfield</code>, <code>getstatic</code>, <code>putstatic</code>, 
  * 		<code>invokevirtual</code>, <code>invokestatic</code>, <code>invokespecial</code>, <code>newinvokespecial</code>, or <code>invokeinterface</code>
  * 		describing the bootstrap method's invocation behavior according to the JVMS
- * 	<li>where <i>bsclass</i> is the internal fully-qualified class name (FQCN) of the class containing the bootstrap method
+ * 	<li>where <i>bsclass</i> is the internal FQCN of the class containing the bootstrap method
  * 	<li>where <i>bsname</i> is the identifier name of the bootstrap method to be invoked
  * 	<li>where <i>bsmtype</i> is the internal method type descriptor of the bootstrap method to be invoked
  * 	<li>where <i>args...</i> is an optional comma-seperated list of static arguments to be passed to the bootstrap method
@@ -170,5 +171,21 @@
  * the bootstrap method has no static arguments to be passed. According to the JVMS, the return type of <i>bsmtype</i> must be assignable to <i>ctype</i>.
  * The static arguments may be any argument type, including arguments that are themselves dynamic constants. These may be nested to an implementation
  * and environment dependent depth.
+ * 
+ * <h3>Syntax Errors</h3>
+ * 
+ * In the case of a syntax error, transformation of the class will fail and a {@link me.archdukeliamus.dygenerate.ClassTransformException ClassTransformException}
+ * will be thrown describing the problem and its location in the string. On the command-line, this information will be printed instead. However,
+ * invalid uses of method or class type descriptors are <i>not</i> checked, nor are argument mismatches.
+ * 
+ * <h2>Post-Processing</h2>
+ * 
+ * The standard way to invoke Dygenerate is through the command line. Files and folders containing class files are listed as arguments. All files
+ * specified, as well as any *.class files found in specified folders will be transformed and overwritten in-place with the patched version.
+ * Any surrogate methods are removed and any invocations of them are replaced with bytecodes. Any errors while transforming a class will be
+ * printed, though this will not stop processing.
+ * <br><br>
+ * Alternatively, Dygenerate may be invoked programmatically, passing a byte array and receiving a byte array of the processed output, with
+ * {@link me.archdukeliamus.dygenerate.ClassTransformException ClassTransformException} being thrown on potential errors.
  */
 package me.archdukeliamus.dygenerate;
