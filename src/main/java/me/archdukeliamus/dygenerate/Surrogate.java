@@ -7,6 +7,7 @@ import java.util.Objects;
  *
  */
 public final class Surrogate {
+	private final String surrogateClassFQCN;
 	private final String surrogateMethodName;
 	private final String surrogateDescriptor;
 
@@ -15,9 +16,18 @@ public final class Surrogate {
 	 * @param surrogateMethodName The identifier name of the surrogate method
 	 * @param surrogateDescriptor The JVM internal method type descriptor of the surrogate method
 	 */
-	public Surrogate(String surrogateMethodName, String surrogateDescriptor) {
+	public Surrogate(String surrogateClassFQCN, String surrogateMethodName, String surrogateDescriptor) {
+		this.surrogateClassFQCN = Objects.requireNonNull(surrogateClassFQCN, "surrogate class FQCN");
 		this.surrogateMethodName = Objects.requireNonNull(surrogateMethodName, "surrogate method name");
 		this.surrogateDescriptor = Objects.requireNonNull(surrogateDescriptor, "surrogate method descriptor");
+	}
+	
+	/**
+	 * Gets the FQCN of the surrogate method.
+	 * @return the owning class FQCN of this surrogate method
+	 */
+	public String getSurrogateClassFQCN() {
+		return surrogateClassFQCN;
 	}
 	
 	/**
@@ -40,6 +50,8 @@ public final class Surrogate {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("Surrogate{");
+		sb.append(surrogateClassFQCN);
+		sb.append(".");
 		sb.append(surrogateMethodName);
 		sb.append(":");
 		sb.append(surrogateDescriptor);
@@ -49,7 +61,7 @@ public final class Surrogate {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(surrogateDescriptor, surrogateMethodName);
+		return Objects.hash(surrogateClassFQCN, surrogateDescriptor, surrogateMethodName);
 	}
 
 	@Override
@@ -61,9 +73,8 @@ public final class Surrogate {
 		if (getClass() != obj.getClass())
 			return false;
 		Surrogate other = (Surrogate) obj;
-		return Objects.equals(surrogateDescriptor, other.surrogateDescriptor)
+		return Objects.equals(surrogateClassFQCN, other.surrogateClassFQCN)
+				&& Objects.equals(surrogateDescriptor, other.surrogateDescriptor)
 				&& Objects.equals(surrogateMethodName, other.surrogateMethodName);
 	}
-	
-	
 }

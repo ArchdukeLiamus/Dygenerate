@@ -1,7 +1,5 @@
 package me.archdukeliamus.dygenerate;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.objectweb.asm.AnnotationVisitor;
@@ -15,11 +13,20 @@ import org.objectweb.asm.Type;
  *
  */
 final class SurrogateMethodClassVisitor extends ClassVisitor {
-	private Map<Surrogate,BootstrapData> surrogates;
+	private final Map<Surrogate,BootstrapData> surrogates;
+	private String classFQCN; // FQCN of the class currently being visited
 	
-	SurrogateMethodClassVisitor(int api) {
+	SurrogateMethodClassVisitor(int api, Map<Surrogate,BootstrapData> surrogateMap) {
 		super(api);
-		surrogates = new HashMap<>();
+		surrogates = surrogateMap;
+	}
+	
+	/**
+	 * Get the detected class FQCN.
+	 * @return
+	 */
+	String getClassFQCN() {
+		return classFQCN;
 	}
 	
 	/**
@@ -28,6 +35,14 @@ final class SurrogateMethodClassVisitor extends ClassVisitor {
 	 */
 	Map<Surrogate,BootstrapData> getSurrogates() {
 		return surrogates;
+	}
+	
+	/**
+	 * Visit class, get the FQCN used.
+	 */
+	@Override
+	public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
+		this.classFQCN = name;
 	}
 	
 	/**
@@ -44,8 +59,9 @@ final class SurrogateMethodClassVisitor extends ClassVisitor {
  *
  */
 final class SurrogateMethodMethodVisitor extends MethodVisitor {
+	// class data accessor
 	private final SurrogateMethodClassVisitor parent;
-	// info about the current method
+	// relevant info about the current method
 	private final int access;
 	private final String name;
 	private final String descriptor;
@@ -59,6 +75,38 @@ final class SurrogateMethodMethodVisitor extends MethodVisitor {
 	}
 	
 	/**
+	 * Accesses class data.
+	 * @return
+	 */
+	SurrogateMethodClassVisitor getParent() {
+		return parent;
+	}
+	
+	/**
+	 * Gets the method access flags.
+	 * @return
+	 */
+	int getMethodAccess() {
+		return access;
+	}
+	
+	/**
+	 * Gets the method name.
+	 * @return
+	 */
+	String getMethodName() {
+		return name;
+	}
+	
+	/**
+	 * Gets the method descriptor.
+	 * @return
+	 */
+	String getMethodDescriptor() {
+		return descriptor;
+	}
+	
+	/**
 	 * Visit an annotation block, but only if it is indy or condy.
 	 */
 	@Override
@@ -66,7 +114,7 @@ final class SurrogateMethodMethodVisitor extends MethodVisitor {
 		// check for indy
 		if (annoDescriptor.equals("Lme/archdukeliamus/dygenerate/InvokeDynamic;")) {
 			// create anno visitor and pass method data down
-			return new SurrogateMethodAnnotationVisitor(api, parent, access, name, descriptor, BootstrapType.INVOKEDYNAMIC);
+			return new SurrogateMethodAnnotationVisitor(api, this, BootstrapType.INVOKEDYNAMIC);
 		} else if (annoDescriptor.equals("Lme/archdukeliamus/dygenerate/ConstantDynamic;")) {
 			// run checks to see if condy could actually apply here
 			// method must have no args + static
@@ -77,7 +125,7 @@ final class SurrogateMethodMethodVisitor extends MethodVisitor {
 				throw new ClassTransformException("method " + name + ":" + descriptor + " must not have arguments for type ConstantDynamic");
 			}
 			// create anno visitor
-			return new SurrogateMethodAnnotationVisitor(api, parent, access, name, descriptor, BootstrapType.CONSTANTDYNAMIC);
+			return new SurrogateMethodAnnotationVisitor(api, this, BootstrapType.CONSTANTDYNAMIC);
 		} else {
 			// signal don't care
 			return null;
@@ -90,20 +138,14 @@ final class SurrogateMethodMethodVisitor extends MethodVisitor {
  *
  */
 final class SurrogateMethodAnnotationVisitor extends AnnotationVisitor {
-	private final SurrogateMethodClassVisitor parent;
-	// info about the current method... again
-	private final int methodAccess;
-	private final String methodName;
-	private final String methodDescriptor;
+	// method data accessor
+	private final SurrogateMethodMethodVisitor parent;
 	// which bootstrap type to create
 	private final BootstrapType type;
 	
-	SurrogateMethodAnnotationVisitor(int api, SurrogateMethodClassVisitor parent, int access, String name, String descriptor, BootstrapType annoType) {
+	SurrogateMethodAnnotationVisitor(int api, SurrogateMethodMethodVisitor parent, BootstrapType annoType) {
 		super(api);
 		this.parent = parent;
-		this.methodAccess = access;
-		this.methodName = name;
-		this.methodDescriptor = descriptor;
 		this.type = annoType;
 	}
 	
@@ -118,7 +160,9 @@ final class SurrogateMethodAnnotationVisitor extends AnnotationVisitor {
 			String payload = (String) value;
 			// Parse the data
 			BootstrapData bootstrapData = BootstrapData.fromString(type, payload);
-			parent.getSurrogates().put(new Surrogate(methodName,methodDescriptor), bootstrapData);
+			parent.getParent().getSurrogates().put(
+					new Surrogate(parent.getParent().getClassFQCN(),parent.getMethodName(),parent.getMethodDescriptor()),
+					bootstrapData);
 		}
 	}
 }

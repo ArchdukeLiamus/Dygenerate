@@ -10,7 +10,9 @@ import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
@@ -133,8 +135,9 @@ public class Dygenerate {
 	 */
 	public static byte[] transformBytecodes(byte[] classBytecode) {
 		try {
+			Map<Surrogate,BootstrapData> surrogateMap = new HashMap<>();
 			// PARSE PHASE - find all methods marked indy and get their bootstrap data
-			SurrogateMethodClassVisitor smcv = new SurrogateMethodClassVisitor(Opcodes.ASM9);
+			SurrogateMethodClassVisitor smcv = new SurrogateMethodClassVisitor(Opcodes.ASM9, surrogateMap);
 			{
 				ClassReader reader = new ClassReader(classBytecode);
 				reader.accept(smcv, ClassReader.SKIP_CODE | ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
@@ -142,7 +145,7 @@ public class Dygenerate {
 			// PATCH PHASE - find all calls to indy surrogates and patch them with indy itself
 			ClassWriter cw = new ClassWriter(0);
 			{
-				DynamicTransformClassVisitor dtcv = new DynamicTransformClassVisitor(Opcodes.ASM9, cw, smcv.getSurrogates());
+				DynamicTransformClassVisitor dtcv = new DynamicTransformClassVisitor(Opcodes.ASM9, cw, surrogateMap);
 				ClassReader reader = new ClassReader(classBytecode);
 				reader.accept(dtcv,0);
 			}
@@ -152,5 +155,9 @@ public class Dygenerate {
 		} catch (Exception ex) {
 			throw new ClassTransformException(ex.getMessage(),ex);
 		}
+	}
+	
+	public static void findSurrogateMethods(byte[] classBytecode, Map<Surrogate,BootstrapData> surrogateMap) {
+		
 	}
 }
