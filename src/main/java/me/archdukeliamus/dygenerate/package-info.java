@@ -133,15 +133,15 @@
  * 
  * Method handle literals are defined as:
  * <br><br>
- * <code>handle</code> <i>invoketype</i> [<code>interface</code>] [<code>class</code>] <i>hclass</i><code>.</code><i>hname</i><code>:</code><i>hmtype</i>
+ * <code>handle</code> <i>invoketype</i> [<code>interface</code>] [<code>class</code>] <i>hclass</i><code>.</code><i>hname</i><code>:</code><i>htype</i>
  * <br>
  * <ul>
  *  <li>where <i>invoketype</i> is one of <code>getfield</code>, <code>putfield</code>, <code>getstatic</code>, <code>putstatic</code>, 
  * 		<code>invokevirtual</code>, <code>invokestatic</code>, <code>invokespecial</code>, <code>newinvokespecial</code>, or <code>invokeinterface</code>
  * 		describing the method's invocation behavior according to the JVMS
- * 	<li>where <i>hclass</i> is the internal FQCN of the class containing the method
- * 	<li>where <i>hname</i> is the identifier name of the method
- * 	<li>where <i>hmtype</i> is the internal method type descriptor of the method
+ * 	<li>where <i>hclass</i> is the internal FQCN of the class containing the method or field
+ * 	<li>where <i>hname</i> is the identifier name of the method or field
+ * 	<li>where <i>htype</i> is the internal method type descriptor of the method or field descriptor of the field
  * </ul>
  * Items in brackets [ ] are optional.
  * <br>
