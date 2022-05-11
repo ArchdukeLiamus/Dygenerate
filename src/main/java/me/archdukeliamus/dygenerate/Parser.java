@@ -171,8 +171,8 @@ class Parser {
 		advance();
 		// colon
 		if (!advanceIf(tokenHereIs(TokenType.COLON))) emitError("Expected colon (:) here");
-		// method descriptor
-		if (!tokenHereIs(TokenType.IDENTIFIER)) emitError("Expected identifier (method descriptor) here");
+		// method descriptor (or field!)
+		if (!tokenHereIs(TokenType.IDENTIFIER)) emitError("Expected identifier (method/field descriptor) here");
 		descriptor = tokenHere().getPayload();
 		advance();
 		// return handle
