@@ -13,13 +13,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
 
 /**
- * Main entry point into Dygenerate and its API.
+ * Main entry point into Dygenerate and its API. The easiest API method to use is {@link #transformBytecodes(byte[])}. If more advanced
+ * transformation behaviour is needed, other methods in this class may be used. These methods generate
  *
  */
 public class Dygenerate {
@@ -134,6 +136,7 @@ public class Dygenerate {
 	 * @return the transformed bytecode
 	 */
 	public static byte[] transformBytecodes(byte[] classBytecode) {
+		Objects.requireNonNull(classBytecode, "bytecode");
 		try {
 			Map<Surrogate,BootstrapData> surrogateMap = new HashMap<>();
 			// PARSE PHASE - find all methods marked indy and get their bootstrap data
@@ -157,7 +160,53 @@ public class Dygenerate {
 		}
 	}
 	
+	/**
+	 * Search for surrogate methods and their annotations in the provided class, placing the data into the provided map.
+	 * If an exception is thrown, the surrogate map may be incomplete and might not contain all surrogates found in the class.
+	 * If the input is not controlled, creating a new map and copying the data on completion may be preferable.
+	 * @param classBytecode the bytecode to process
+	 * @param surrogateMap the map that will hold found surrogate data.
+	 * @throws InvalidBootstrapDataException if bootstrap data in any surrogate is found to be invalid
+	 * @throws ClassTransformException if a condy surrogate method has an invalid signature
+	 */
 	public static void findSurrogateMethods(byte[] classBytecode, Map<Surrogate,BootstrapData> surrogateMap) {
-		
+		Objects.requireNonNull(classBytecode, "bytecode");
+		Objects.requireNonNull(surrogateMap, "surrogate map");
+		try {
+			SurrogateMethodClassVisitor smcv = new SurrogateMethodClassVisitor(Opcodes.ASM9, surrogateMap);
+			ClassReader reader = new ClassReader(classBytecode);
+			reader.accept(smcv, ClassReader.SKIP_CODE | ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
+		} catch (ClassTransformException ex) {
+			throw ex;
+		} catch (InvalidBootstrapDataException ex) {
+			throw ex;
+		} catch (Exception ex) {
+			throw new ClassTransformException(ex.getMessage(),ex);
+		}
+	}
+	
+	/**
+	 * Patch references to surrogate methods in the provided class using the provided surrogate map, removing any surrogate
+	 * methods present and substituting in invokedynamic and ldc instructions in the place of surrogate method invocations.
+	 * The surrogate map is not modified.
+	 * @param classBytecode the class to patch
+	 * @param surrogateMap the surrogate map containing data about surrogate methods to replace
+	 * @return the transformed bytecode
+	 * @throws ClassTransformException if there is a problem transforming the class
+	 */
+	public static byte[] patchSurrogateReferences(byte[] classBytecode, Map<Surrogate,BootstrapData> surrogateMap) {
+		Objects.requireNonNull(classBytecode, "bytecode");
+		Objects.requireNonNull(surrogateMap, "surrogate map");
+		try {
+			ClassWriter cw = new ClassWriter(0);
+			DynamicTransformClassVisitor dtcv = new DynamicTransformClassVisitor(Opcodes.ASM9, cw, surrogateMap);
+			ClassReader reader = new ClassReader(classBytecode);
+			reader.accept(dtcv,0);
+			return cw.toByteArray();
+		} catch (ClassTransformException ex) {
+			throw ex;
+		} catch (Exception ex) {
+			throw new ClassTransformException(ex.getMessage(),ex);
+		}
 	}
 }
