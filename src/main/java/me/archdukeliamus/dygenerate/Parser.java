@@ -276,18 +276,19 @@ class Parser {
 	private Integer parseInt(String str) {
 		try {
 			// Parse the negative sign if present
-			String negative = "";
+			boolean neg = false;
+			String posNum = str;
 			if (str.startsWith("-")) {
-				str = str.substring(1);
-				negative = "-";
+				neg = true;
+				posNum = str.substring(1);
 			}
 			// Parse hex
-			if (str.startsWith("0x") || str.startsWith("0X")) {
+			if (posNum.startsWith("0x") || posNum.startsWith("0X")) {
 				// hex
-				return Integer.parseInt(negative + str.substring(2), 16);
+				return parseHexInt(posNum.substring(2), neg);
 			} else {
 				// decimal
-				return Integer.parseInt(negative + str, 10);
+				return Integer.parseInt(str, 10);
 			}
 		} catch (NumberFormatException ex) {
 			emitError("Illegal int value: " + str);
@@ -296,29 +297,54 @@ class Parser {
 		}
 	}
 	
+	private Integer parseHexInt(String str, boolean negative) {
+		if (str.length() > 8) {
+			emitError("hex literal too long");
+			return null; // unreachable
+		}
+		int value = 0x00000000;
+		for (int i = 0; i < str.length(); i++) {
+			value = value << 4 | Character.digit(str.charAt(i), 16);
+		}
+		return negative? -value : value;
+	}
+	
 	private Long parseLong(String str) {
 		try {
 			// Strip the L
 			str = str.substring(0, str.length() - 1);
 			// Parse the negative sign if present
-			String negative = "";
+			boolean neg = false;
+			String posNum = str;
 			if (str.startsWith("-")) {
-				str = str.substring(1);
-				negative = "-";
+				neg = true;
+				posNum = str.substring(1);
 			}
 			// Parse hex
-			if (str.startsWith("0x") || str.startsWith("0X")) {
+			if (posNum.startsWith("0x") || posNum.startsWith("0X")) {
 				// hex
-				return Long.parseLong(negative + str.substring(2), 16);
+				return parseHexLong(posNum.substring(2), neg);
 			} else {
 				// decimal
-				return Long.parseLong(negative + str, 10);
+				return Long.parseLong(str, 10);
 			}
 		} catch (NumberFormatException ex) {
 			emitError("Illegal long value: " + str);
 			// unreachable
 			return null;
 		}
+	}
+	
+	private Long parseHexLong(String str, boolean negative) {
+		if (str.length() > 16) {
+			emitError("hex literal too long");
+			return null; // unreachable
+		}
+		long value = 0x0000000000000000L;
+		for (int i = 0; i < str.length(); i++) {
+			value = value << 4 | Character.digit(str.charAt(i), 16);
+		}
+		return negative? -value : value;
 	}
 	
 	private Float parseFloat(String str) {
@@ -356,16 +382,6 @@ class Parser {
 			return Type.getMethodType(str);
 		} catch (IllegalArgumentException ex) {
 			emitError("Illegal class descriptor type: " + str);
-			// unreachable
-			return null;
-		}
-	}
-	
-	private Type parseFieldType(String str) {
-		try {
-			return Type.getObjectType(str);
-		} catch (IllegalArgumentException ex) {
-			emitError("Illegal field descriptor type: " + str);
 			// unreachable
 			return null;
 		}

@@ -21,7 +21,8 @@ import org.objectweb.asm.Opcodes;
 
 /**
  * Main entry point into Dygenerate and its API. The easiest API method to use is {@link #transformBytecodes(byte[])}. If more advanced
- * transformation behaviour is needed, other methods in this class may be used. These methods generate
+ * transformation behaviour is needed, other methods in this class may be used. These methods allow generation of surrogate data and patching
+ * to be performed seperately.
  *
  */
 public class Dygenerate {

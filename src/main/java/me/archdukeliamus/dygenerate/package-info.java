@@ -187,5 +187,14 @@
  * <br><br>
  * Alternatively, Dygenerate may be invoked programmatically, passing a byte array and receiving a byte array of the processed output, with
  * {@link me.archdukeliamus.dygenerate.ClassTransformException ClassTransformException} being thrown on potential errors.
+ * 
+ * <h2>An Example</h2>
+ * <br>
+ * <pre>
+ * {@literal @}InvokeDynamic("invokestatic com/example/BootstrapClass.bootstrapMethod:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;ILFDLjava/lang/String;Ljava/lang/Class;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/Object;)Ljava/lang/invoke/CallSite;")
+ * private static void invokedynamicSurrogate() {
+ * 		throw new Error("replaced with opcode after post-processing");
+ * }
+ * </pre>
  */
 package me.archdukeliamus.dygenerate;
