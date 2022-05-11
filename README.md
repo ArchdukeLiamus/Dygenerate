@@ -71,6 +71,6 @@ public static Method main:"([Ljava/lang/String;)V"
 ```
 (Hello from invokedynamic!)
 
-See the Javadoc for more details.
+See the [Javadoc](https://archdukeliamus.github.io/Dygenerate/javadoc/) for more details.
 
 Dygenerate is an experimental project and is still a work in progress. While it is stable for production use, there may still be unknown bugs. Use with care.
