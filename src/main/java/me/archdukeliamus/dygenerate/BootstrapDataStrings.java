@@ -1,8 +1,7 @@
 package me.archdukeliamus.dygenerate;
 
 /**
- * A class containing various surrogate methods as well as useful constant strings for use in bootstrap data
- * construction. Some of the surrogate methods in this class are special and have unique behavior when called.
+ * A class containing useful constant strings for use in bootstrap data construction.
  * <br><br>
  * Constant strings are organised as follows:
  * <br>
@@ -17,9 +16,9 @@ package me.archdukeliamus.dygenerate;
  *  <tr><td>H</td><td>Method handles to various methods. These do not include the <code>handle</code> keyword.</td></tr>
  * </table>
  */
-public final class Surrogates {
+public final class BootstrapDataStrings {
 
-	private Surrogates() {}
+	private BootstrapDataStrings() {}
 	
 	// Descriptors
 	/**
@@ -132,4 +131,6 @@ public final class Surrogates {
 	 * The bootstrap method Object ObjectMethods.bootstrap(MethodHandles.Lookup, String, TypeDescriptor, Class, String, MethodHandle...).
 	 */
 	public static final String B_OBJMTH_BOOTSTRAP = "invokestatic " + C_OBJMETHODS + ".bootstrap:(" + A_DESC + D_CLASS + D_STRING + "[" + D_MHANDLE + ")" + D_OBJECT;
+	
+	// Method handles
 }
