@@ -68,6 +68,10 @@ public final class BootstrapDataStrings {
 	 * The package for Dygenerate, me/archdukeliamus/dygenerate.
 	 */
 	public static final String P_DYGENERATE = "me/archdukeliamus/dygenerate";
+	/**
+	 * The package for Dygenerate runtime utilities, me/archdukeliamus/dygenerate/rtutils.
+	 */
+	public static final String P_RTUTILS = P_DYGENERATE + "/rtutils";
 	
 	// Classes
 	
@@ -87,6 +91,10 @@ public final class BootstrapDataStrings {
 	 * The class FQCN for ObjectMethods.
 	 */
 	public static final String C_OBJMETHODS = P_RUNTIME + "/ObjectMethods";
+	/**
+	 * The class FQCN for Bootstraps.
+	 */
+	public static final String C_BOOTSTRAPS = P_RTUTILS + "/Bootstraps";
 	
 	// Argument sequences
 	

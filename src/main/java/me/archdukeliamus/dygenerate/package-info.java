@@ -212,5 +212,10 @@
  *   throw new Error("replaced with opcode after post-processing");
  * }
  * </pre>
+ * 
+ * <h2>Dependencies</h2>
+ * 
+ * If Dygenerate is used solely as a bytecode postprocessor on class files ahead-of-time, Dygenerate does not need to be present at runtime.
+ * However, any usage of code in the <code>me.archdukeliamus.dygenerate.rtutils</code> <i>will</i> require Dygenerate to be present at runtime.
  */
 package me.archdukeliamus.dygenerate;
