@@ -41,7 +41,7 @@ public final class DuckTypeCallSite extends MutableCallSite {
 	}
 	
 	/**
-	 * Construct a call site with a default polymorphic cache of 8 classes
+	 * Construct a call site with a custom cache size
 	 * @param lk Lookup from the caller
 	 * @param name Name of method to invoke
 	 * @param type Type of the method to invoke (including Object arg)
