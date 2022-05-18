@@ -5,6 +5,7 @@ import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.invoke.MutableCallSite;
 import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * A call site that on invocation will call a <i>linker method handle</i> to determine the method to be invoked. The linker method
@@ -14,20 +15,34 @@ import java.util.List;
  *
  */
 public class LinkingCallSite extends MutableCallSite {
-	private final MethodHandle MH_LINK_AND_CALL;
+	private MethodHandle MH_LINK_AND_CALL = null; // has to be initialised later
 	
 	/**
 	 * Create a LinkingCallSite for the given method type using the provided linker.
 	 * The types of the linker arguments must be compatible with those of the call site type, though later arguments may be elided.
-	 * The linker MH must return a MethodHandle when invoked.
+	 * After this constructor runs, the caller should call {@link #installLinker(MethodHandle)} to install the linker method handle before
+	 * any other methods on this class are called.
 	 * @param type The type of this call site
-	 * @param linker The method handle to use as a linker
 	 */
-	public LinkingCallSite(MethodType type, MethodHandle linker) {
+	public LinkingCallSite(MethodType type) {
 		super(type);
-		if (!MethodHandle.class.isInstance(linker.type().returnType())) throw new IllegalArgumentException("Linker does not return a MethodHandle");
-		MH_LINK_AND_CALL = MethodHandles.foldArguments(MethodHandles.exactInvoker(type), linker);
+	}
+	
+	/**
+	 * Install the provided method handle as the linker for this call site. This handle will be called whenever a method needs to be resolved
+	 * for a set of given arguments. This method must be called before any other method in this class is used and may only be called once.
+	 * 
+	 * @param linkerHandle the methodhandle used for linking
+	 */
+	public void installLinker(MethodHandle linkerHandle) {
+		if (MH_LINK_AND_CALL != null) throw new IllegalStateException("already installed");
+		MH_LINK_AND_CALL = makeLinkAndCall(linkerHandle);
 		setTarget(MH_LINK_AND_CALL);
+		
+	}
+	
+	private MethodHandle makeLinkAndCall(MethodHandle linkerHandle) {
+		return MethodHandles.foldArguments(MethodHandles.exactInvoker(type()), linkerHandle);
 	}
 	
 	/**
@@ -55,11 +70,11 @@ public class LinkingCallSite extends MutableCallSite {
 	 * @param guardTargetPairs a list of guard-target pairs
 	 */
 	public void installMultiFastPath(List<MethodHandle> guardTargetPairs) {
-		if (guardTargetPairs.isEmpty()) throw new IllegalArgumentException("List is empty");
 		if (guardTargetPairs.size() % 2 != 0) throw new IllegalArgumentException("List does not contain complete pairs");
 		MethodHandle handle = MH_LINK_AND_CALL;
 		for (int i = 0; i < guardTargetPairs.size(); i += 2) {
 			handle = MethodHandles.guardWithTest(guardTargetPairs.get(i), guardTargetPairs.get(i+1), handle);
 		}
+		setTarget(handle);
 	}
 }
