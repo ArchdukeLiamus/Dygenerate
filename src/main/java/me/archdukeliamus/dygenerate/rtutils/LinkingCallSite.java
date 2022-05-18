@@ -9,7 +9,7 @@ import java.lang.invoke.MutableCallSite;
  * A call site that on invocation will call a <i>linker method handle</i> to determine the method to be invoked. The linker method
  * handle is called with none, some, or all of the original arguments and must return a MethodHandle determining the target.
  * The linker should also call {@link #installFastPath(MethodHandle, MethodHandle)} to cache the target such that future
- * invocations can skip the lookup step. Implementors must provide their own thread safety guarantees.
+ * invocations can skip the linking step. Implementors must provide their own thread safety guarantees.
  *
  */
 public class LinkingCallSite extends MutableCallSite {
