@@ -4,6 +4,7 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.invoke.MutableCallSite;
+import java.util.List;
 
 /**
  * A call site that on invocation will call a <i>linker method handle</i> to determine the method to be invoked. The linker method
@@ -45,5 +46,20 @@ public class LinkingCallSite extends MutableCallSite {
 	 */
 	public void installFastPath(MethodHandle guard, MethodHandle target) {
 		setTarget(MethodHandles.guardWithTest(guard, target, MH_LINK_AND_CALL));
+	}
+	
+	/**
+	 * Install a guarded method handles with chained pairs of guards and fast-path targets, checked in descending order. The last pair in the list is
+	 * the first check to be invoked. The arguments must abide by the same restrictions as MethodHandles.guardWithTest. If all tests fail, the linker
+	 * method handle will be called. This method should be called from within the linker method's implementation.
+	 * @param guardTargetPairs a list of guard-target pairs
+	 */
+	public void installMultiFastPath(List<MethodHandle> guardTargetPairs) {
+		if (guardTargetPairs.isEmpty()) throw new IllegalArgumentException("List is empty");
+		if (guardTargetPairs.size() % 2 != 0) throw new IllegalArgumentException("List does not contain complete pairs");
+		MethodHandle handle = MH_LINK_AND_CALL;
+		for (int i = 0; i < guardTargetPairs.size(); i += 2) {
+			handle = MethodHandles.guardWithTest(guardTargetPairs.get(i), guardTargetPairs.get(i+1), handle);
+		}
 	}
 }
