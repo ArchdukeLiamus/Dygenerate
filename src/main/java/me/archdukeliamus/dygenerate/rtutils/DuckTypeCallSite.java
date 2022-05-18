@@ -14,6 +14,9 @@ import java.util.List;
  * Remaining arguments are passed for the method to be invoked. The exact type must be present on the target class;
  * argument conversions are not performed even if it would result in the call resolving (method overloads are decided at compile-time).
  * By default, 8 class targets are cached.
+ * 
+ * Use of this call site is safe by multiple threads. In the case of concurrent dispatches to the linker, the last writer wins.
+ * Spurious lookups may result in some cases.
  */
 public final class DuckTypeCallSite extends MutableCallSite {
 	private final MethodHandle MH_TESTCLASS = findOwnMH("testClass", MethodType.methodType(boolean.class, Class.class, Object.class));
@@ -77,8 +80,7 @@ public final class DuckTypeCallSite extends MutableCallSite {
 		Class<?> cls = recv.getClass();
 		MethodHandle mh = findOrThrow(recv);
 		
-		// updates to callsite *must* be seen in all threads otherwise guard failures may result in duplicate class lookups
-		// hopefully most callsites are limited polymorphic so this should not happen often
+		// Try to race the lookup. If we lose, it's fine, the lookup will just try again next time.
 		
 		List<MethodHandle> newCacheList = new ArrayList<>(cacheList); // volatile read
 		newCacheList.add(MH_TESTCLASS.bindTo(cls));
@@ -95,10 +97,14 @@ public final class DuckTypeCallSite extends MutableCallSite {
 		// With the handle we just found, make a guard handle to try to fast track it next time
 		// If class is instance use handle we found, otherwise lookup again
 		
-		// A thread race here is okay- at worst an extra spurious lookup occurs and the list is slightly desynced. That list
-		// only matters in the updated MH construction so that's not a problem.
-		setTarget(genGuardHandle(newCacheList));
-		cacheList = newCacheList; // volatile write
+		// A thread race here is okay- at worst an extra spurious lookup occurs. That list
+		// only matters in the updated MH construction so that's not a problem. Still need to lock to avoid a desync with the list though.
+		// TODO: does this work the way I expect it to?
+		synchronized (this) {
+			setTarget(genGuardHandle(newCacheList));
+			// <a lookup by other thread while here would trigger desync>
+			cacheList = newCacheList; // volatile write
+		}
 		// return handle found, still have to give something to invoke
 		return mh.asType(type());
 	}
