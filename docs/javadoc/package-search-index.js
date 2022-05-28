@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"me.archdukeliamus.dygenerate"}];updateSearchResults();
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"me.archdukeliamus.dygenerate"},{"l":"me.archdukeliamus.dygenerate.rtutils"}];updateSearchResults();

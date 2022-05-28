@@ -31,6 +31,7 @@ loadScripts(document, 'script');</script>
 <div class="top-nav" id="navbar-top">
 <div class="skip-nav"><a href="#skip-navbar-top" title="Skip navigation links">Skip navigation links</a></div>
 <ul id="navbar-top-firstrow" class="nav-list" title="Navigation">
+<li><a href="../../../index.html">Overview</a></li>
 <li class="nav-bar-cell1-rev">Package</li>
 <li>Class</li>
 <li><a href="package-tree.html">Tree</a></li>
@@ -43,7 +44,7 @@ loadScripts(document, 'script');</script>
 <ul class="sub-nav-list">
 <li>Package:&nbsp;</li>
 <li><a href="#package-description">Description</a>&nbsp;|&nbsp;</li>
-<li>Related Packages&nbsp;|&nbsp;</li>
+<li><a href="#related-package-summary">Related Packages</a>&nbsp;|&nbsp;</li>
 <li><a href="#class-summary">Classes and Interfaces</a></li>
 </ul>
 </div>
@@ -259,7 +260,7 @@ loadScripts(document, 'script');</script>
  @InvokeDynamic(
         """     
         invokestatic com/example/BootstrapClass.bootstrapMethod:
-        (Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;ILFDLjava/lang/String;Ljava/lang/Class;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/Object;)Ljava/lang/invoke/CallSite;
+        (Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;IJFDLjava/lang/String;Ljava/lang/Class;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/Object;)Ljava/lang/invoke/CallSite;
         {
           12345,
           0xFFFFFFFF00000000L,
@@ -275,10 +276,30 @@ loadScripts(document, 'script');</script>
  private static void invokedynamicSurrogate() {
    throw new Error("replaced with opcode after post-processing");
  }
- </pre></div>
+ </pre>
+ 
+ <h2>Dependencies</h2>
+ 
+ If Dygenerate is used solely as a bytecode postprocessor on class files ahead-of-time, Dygenerate does not need to be present at runtime.
+ However, any usage of code in the <code>me.archdukeliamus.dygenerate.rtutils</code> <i>will</i> require Dygenerate to be present at runtime.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
+<li>
+<div id="related-package-summary">
+<div class="caption"><span>Related Packages</span></div>
+<div class="summary-table two-column-summary">
+<div class="table-header col-first">Package</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><a href="rtutils/package-summary.html">me.archdukeliamus.dygenerate.rtutils</a></div>
+<div class="col-last even-row-color">
+<div class="block">The <code>me.archdukeliamus.dygenerate.rtutils</code> package contains various bootstrap methods and call site implementations for
+ potentially common uses of <code>invokedynamic</code>, such as unusual dispatching strategies or analogues of behavior in other
+ language runtimes.</div>
+</div>
+</div>
+</div>
+</li>
 <li>
 <div id="class-summary">
 <div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="class-summary-tab0" role="tab" aria-selected="true" aria-controls="class-summary.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary', 2)" class="active-table-tab">All Classes and Interfaces</button><button id="class-summary-tab2" role="tab" aria-selected="false" aria-controls="class-summary.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary-tab2', 2)" class="table-tab">Classes</button><button id="class-summary-tab3" role="tab" aria-selected="false" aria-controls="class-summary.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary-tab3', 2)" class="table-tab">Enum Classes</button><button id="class-summary-tab5" role="tab" aria-selected="false" aria-controls="class-summary.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary-tab5', 2)" class="table-tab">Exceptions</button><button id="class-summary-tab7" role="tab" aria-selected="false" aria-controls="class-summary.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary-tab7', 2)" class="table-tab">Annotation Interfaces</button></div>
@@ -290,32 +311,36 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">A description of bootstrapping data needed for invokedynamic or dynamic constants.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab3"><a href="BootstrapType.html" title="enum class in me.archdukeliamus.dygenerate">BootstrapType</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab3">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="BootstrapDataStrings.html" title="class in me.archdukeliamus.dygenerate">BootstrapDataStrings</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">A class containing useful constant strings for use in bootstrap data construction.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab3"><a href="BootstrapType.html" title="enum class in me.archdukeliamus.dygenerate">BootstrapType</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab3">
 <div class="block">A type of bootstrap data, used to determine what type of surrogate an instance of bootstrap data is describing.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab5"><a href="ClassTransformException.html" title="class in me.archdukeliamus.dygenerate">ClassTransformException</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab5">
+<div class="col-first odd-row-color class-summary class-summary-tab5"><a href="ClassTransformException.html" title="class in me.archdukeliamus.dygenerate">ClassTransformException</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab5">
 <div class="block">Thrown if a class transformation operation fails.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab7"><a href="ConstantDynamic.html" title="annotation interface in me.archdukeliamus.dygenerate">ConstantDynamic</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab7">
+<div class="col-first even-row-color class-summary class-summary-tab7"><a href="ConstantDynamic.html" title="annotation interface in me.archdukeliamus.dygenerate">ConstantDynamic</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab7">
 <div class="block">Marks methods that are to be used as surrogates for dynamic constants (condy).</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="Dygenerate.html" title="class in me.archdukeliamus.dygenerate">Dygenerate</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="Dygenerate.html" title="class in me.archdukeliamus.dygenerate">Dygenerate</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">Main entry point into Dygenerate and its API.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab5"><a href="InvalidBootstrapDataException.html" title="class in me.archdukeliamus.dygenerate">InvalidBootstrapDataException</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab5">
+<div class="col-first even-row-color class-summary class-summary-tab5"><a href="InvalidBootstrapDataException.html" title="class in me.archdukeliamus.dygenerate">InvalidBootstrapDataException</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab5">
 <div class="block">Thrown if a string describing bootstrap data is invalid.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab7"><a href="InvokeDynamic.html" title="annotation interface in me.archdukeliamus.dygenerate">InvokeDynamic</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab7">
+<div class="col-first odd-row-color class-summary class-summary-tab7"><a href="InvokeDynamic.html" title="annotation interface in me.archdukeliamus.dygenerate">InvokeDynamic</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab7">
 <div class="block">Marks methods that are to be used as invokedynamic surrogates.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="Surrogate.html" title="class in me.archdukeliamus.dygenerate">Surrogate</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="Surrogate.html" title="class in me.archdukeliamus.dygenerate">Surrogate</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">A description of a surrogate method, containing the name and method type descriptor.</div>
 </div>
 </div>
