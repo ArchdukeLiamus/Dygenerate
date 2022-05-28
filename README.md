@@ -6,6 +6,43 @@ language. Just define and annotate the methods, compile your code, then run
 Dygenerate on the compiled output to have the bytecodes inserted. Alternatively,
 use the API to define transformations programmatically.
 
+## But why?
+
+There are times where some level of dynamism is required to implement a feature
+which otherwise cannot be performed within the bounds of Java (or any other JVM language)
+or would otherwise be cumbersome to do so. The two typical ways to break out of the
+limitations of the language are through the Core Reflection API (`java.lang.reflect`)
+or direct use of `java.lang.invoke` (JLI).
+
+However, reflection is cumbersome, Java-centric, performs access checks on every
+call (unless they are suppressed), and has to box and unbox primitive types.
+Additionally, there is no flexibility to manipulate arguments going into the call,
+and `Method` objects have to be cached in fields that other code could introspect.
+
+Direct JLI gets us closer (no access checks per-call, no boxing/unboxing,
+ability to manipulate and curry arguments) and can potentially run as fast as a
+direct call to the target method. However, doing so requires method handles and
+call sites to be registered as `static final` fields to actually attain that performance.
+This still leaves the possibility of leaking those fields via reflection. It also has
+the problem that target resolution must be performed at class load time: lazy loading
+is not possible, nor can binding be deferred to a time when more information is
+available. For example, the method to be targeted might not yet exist. Furthermore,
+all the fields to create and exceptions to catch impose a lot of boilerplate code
+that has to be duplicated for each and every unique call site used. (That's bad.)
+
+`invokedynamic` has none of the above problems: call sites can be linked lazily,
+and it is <i>never</i> possible to obtain a call site through reflection unless
+the instance is deliberately leaked. Additionally, the need for extra fields for
+each and every call site and handle goes away, and there's no longer a need to
+catch exceptions around handle invocations. In short: the opportunities for
+dynamism increase.
+
+And a final note: there's no equivalent to a lazy-loaded dynamic constant either.
+
+Dygenerate exists to enable that potential dynamism, as well as make it easier
+to experiment with the possibilities of `invokedynamic` outside the context of
+"compiler magic" (which is why this project was started in the first place).
+
 ## Requirements
 
 - Java 7 or higher (`invokedynamic`)

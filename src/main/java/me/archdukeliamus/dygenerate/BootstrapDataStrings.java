@@ -1,5 +1,7 @@
 package me.archdukeliamus.dygenerate;
 
+import me.archdukeliamus.dygenerate.rtutils.Bootstraps;
+
 /**
  * A class containing useful constant strings for use in bootstrap data construction.
  * <br><br>
@@ -124,6 +126,16 @@ public final class BootstrapDataStrings {
 	 * additional static arguments.
 	 */
 	public static final String M_INDY_OBJARRAY = "(" + A_INDY + "[" + D_OBJECT + ")" + D_CALLSITE;
+	/**
+	 * The method descriptor for an <code>invokedynamic</code> bootstrap method returning a CallSite and taking a method handle as the sole
+	 * additional static argument.
+	 */
+	public static final String M_INDY_MHANDLE = "(" + A_INDY + D_MHANDLE + ")" + D_CALLSITE;
+	/**
+	 * The method descriptor for an <code>invokedynamic</code> bootstrap method returning a CallSite and taking a method type as the sole
+	 * additional static argument.
+	 */
+	public static final String M_INDY_MTYPE = "(" + A_INDY + D_MTYPE + ")" + D_CALLSITE;
 	
 	// Bootstrap methods
 	
@@ -139,6 +151,22 @@ public final class BootstrapDataStrings {
 	 * The bootstrap method Object ObjectMethods.bootstrap(MethodHandles.Lookup, String, TypeDescriptor, Class, String, MethodHandle...).
 	 */
 	public static final String B_OBJMTH_BOOTSTRAP = "invokestatic " + C_OBJMETHODS + ".bootstrap:(" + A_DESC + D_CLASS + D_STRING + "[" + D_MHANDLE + ")" + D_OBJECT;
+	/**
+	 * The bootstrap method for {@link Bootstraps#duckTypeCall(java.lang.invoke.MethodHandles.Lookup, String, java.lang.invoke.MethodType)}.
+	 */
+	public static final String B_DUCKTYPE_CALL = "invokestatic " + C_BOOTSTRAPS + ".duckTypeCall:(" + A_INDY + ")" + D_CALLSITE;
+	/**
+	 * The bootstrap method for {@link Bootstraps#duckTypeCall(java.lang.invoke.MethodHandles.Lookup, String, java.lang.invoke.MethodType, int)}.
+	 */
+	public static final String B_DUCKTYPE_CALL_POLYMORPHIC = "invokestatic " + C_BOOTSTRAPS + ".duckTypeCall:(" + A_INDY + "I)" + D_CALLSITE;
+	/**
+	 * The bootstrap method for {@link Bootstraps#lookupAndInvoke(java.lang.invoke.MethodHandles.Lookup, String, java.lang.invoke.MethodType, java.lang.invoke.MethodHandle)}.
+	 */
+	public static final String B_LOOKUP_AND_INVOKE = "invokestatic " + C_BOOTSTRAPS + ".lookupAndInvoke:" + M_INDY_MHANDLE;
+	/**
+	 * The bootstrap method for {@link Bootstraps#lookupAndInvokeExact(java.lang.invoke.MethodHandles.Lookup, String, java.lang.invoke.MethodType, java.lang.invoke.MethodHandle)}.
+	 */
+	public static final String B_LOOKUP_AND_INVOKEEXACT = "invokestatic " + C_BOOTSTRAPS + ".lookupAndInvokeExact:" + M_INDY_MHANDLE;
 	
 	// Method handles
 }

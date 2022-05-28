@@ -15,7 +15,11 @@
 <script type="text/javascript" src="../../../../script-dir/jquery-ui.min.js"></script>
 </head>
 <body class="class-declaration-page">
-<script type="text/javascript">var pathtoroot = "../../../../";
+<script type="text/javascript">var evenRowColor = "even-row-color";
+var oddRowColor = "odd-row-color";
+var tableTab = "table-tab";
+var activeTableTab = "active-table-tab";
+var pathtoroot = "../../../../";
 loadScripts(document, 'script');</script>
 <noscript>
 <div>JavaScript is disabled on your browser.</div>
@@ -48,7 +52,7 @@ loadScripts(document, 'script');</script>
 <li>Detail:&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
 <li>Constr&nbsp;|&nbsp;</li>
-<li>Method</li>
+<li><a href="#method-detail">Method</a></li>
 </ul>
 </div>
 <div class="nav-list-search"><label for="search-input">SEARCH:</label>
@@ -81,9 +85,150 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
+<div id="method-summary-table">
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab1" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab1', 3)" class="table-tab">Static Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
+<div id="method-summary-table.tabpanel" role="tabpanel">
+<div class="summary-table three-column-summary" aria-labelledby="method-summary-table-tab0">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Method</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/invoke/CallSite.html" title="class or interface in java.lang.invoke" class="external-link">CallSite</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#duckTypeCall(java.lang.invoke.MethodHandles.Lookup,java.lang.String,java.lang.invoke.MethodType)" class="member-name-link">duckTypeCall</a><wbr>(<a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/invoke/MethodHandles.Lookup.html" title="class or interface in java.lang.invoke" class="external-link">MethodHandles.Lookup</a>&nbsp;lk,
+ <a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+ <a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/invoke/MethodType.html" title="class or interface in java.lang.invoke" class="external-link">MethodType</a>&nbsp;type)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">A call site that implements duck-typing calls for a given method and signature.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/invoke/CallSite.html" title="class or interface in java.lang.invoke" class="external-link">CallSite</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#duckTypeCall(java.lang.invoke.MethodHandles.Lookup,java.lang.String,java.lang.invoke.MethodType,int)" class="member-name-link">duckTypeCall</a><wbr>(<a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/invoke/MethodHandles.Lookup.html" title="class or interface in java.lang.invoke" class="external-link">MethodHandles.Lookup</a>&nbsp;lk,
+ <a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+ <a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/invoke/MethodType.html" title="class or interface in java.lang.invoke" class="external-link">MethodType</a>&nbsp;type,
+ int&nbsp;polymorphism)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">A call site that implements duck-typing calls for a given method and signature.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/invoke/CallSite.html" title="class or interface in java.lang.invoke" class="external-link">CallSite</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#lookupAndInvoke(java.lang.invoke.MethodHandles.Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.invoke.MethodHandle)" class="member-name-link">lookupAndInvoke</a><wbr>(<a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/invoke/MethodHandles.Lookup.html" title="class or interface in java.lang.invoke" class="external-link">MethodHandles.Lookup</a>&nbsp;lk,
+ <a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;callerName,
+ <a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/invoke/MethodType.html" title="class or interface in java.lang.invoke" class="external-link">MethodType</a>&nbsp;callerType,
+ <a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/invoke/MethodHandle.html" title="class or interface in java.lang.invoke" class="external-link">MethodHandle</a>&nbsp;lookupHandle)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">A constant call site that when its target is invoked, will call <code>lookupHandle</code> with the caller's lookup, name, method type, and the
+ arguments for that invocation to lookup the target method handle to be called for that invocation as if by <code>invoke</code>.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/invoke/CallSite.html" title="class or interface in java.lang.invoke" class="external-link">CallSite</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#lookupAndInvokeExact(java.lang.invoke.MethodHandles.Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.invoke.MethodHandle)" class="member-name-link">lookupAndInvokeExact</a><wbr>(<a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/invoke/MethodHandles.Lookup.html" title="class or interface in java.lang.invoke" class="external-link">MethodHandles.Lookup</a>&nbsp;lk,
+ <a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;callerName,
+ <a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/invoke/MethodType.html" title="class or interface in java.lang.invoke" class="external-link">MethodType</a>&nbsp;callerType,
+ <a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/invoke/MethodHandle.html" title="class or interface in java.lang.invoke" class="external-link">MethodHandle</a>&nbsp;lookupHandle)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">A constant call site that when its target is invoked, will call <code>lookupHandle</code> with the caller's lookup, name, method type, and the
+ arguments for that invocation to lookup the target method handle to be called for that invocation as if by <code>invokeExact</code>.</div>
+</div>
+</div>
+</div>
+</div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
+</section>
+</li>
+</ul>
+</section>
+<section class="details">
+<ul class="details-list">
+<!-- ============ METHOD DETAIL ========== -->
+<li>
+<section class="method-details" id="method-detail">
+<h2>Method Details</h2>
+<ul class="member-list">
+<li>
+<section class="detail" id="duckTypeCall(java.lang.invoke.MethodHandles.Lookup,java.lang.String,java.lang.invoke.MethodType)">
+<h3>duckTypeCall</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/invoke/CallSite.html" title="class or interface in java.lang.invoke" class="external-link">CallSite</a></span>&nbsp;<span class="element-name">duckTypeCall</span><wbr><span class="parameters">(<a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/invoke/MethodHandles.Lookup.html" title="class or interface in java.lang.invoke" class="external-link">MethodHandles.Lookup</a>&nbsp;lk,
+ <a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+ <a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/invoke/MethodType.html" title="class or interface in java.lang.invoke" class="external-link">MethodType</a>&nbsp;type)</span></div>
+<div class="block">A call site that implements duck-typing calls for a given method and signature. The receiver object that would be <code>this</code> is
+ passed as first argument to the call site target. Up to 8 class types are cached for fast invocation.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>lk</code> - caller lookup</dd>
+<dd><code>name</code> - caller name</dd>
+<dd><code>type</code> - caller type</dd>
+<dt>Returns:</dt>
+<dd>a DuckTypeCallSite</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="duckTypeCall(java.lang.invoke.MethodHandles.Lookup,java.lang.String,java.lang.invoke.MethodType,int)">
+<h3>duckTypeCall</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/invoke/CallSite.html" title="class or interface in java.lang.invoke" class="external-link">CallSite</a></span>&nbsp;<span class="element-name">duckTypeCall</span><wbr><span class="parameters">(<a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/invoke/MethodHandles.Lookup.html" title="class or interface in java.lang.invoke" class="external-link">MethodHandles.Lookup</a>&nbsp;lk,
+ <a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+ <a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/invoke/MethodType.html" title="class or interface in java.lang.invoke" class="external-link">MethodType</a>&nbsp;type,
+ int&nbsp;polymorphism)</span></div>
+<div class="block">A call site that implements duck-typing calls for a given method and signature. The receiver object that would be <code>this</code> is
+ passed as first argument to the call site target. The number of class types cached for fast invocation is configurable.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>lk</code> - caller lookup</dd>
+<dd><code>name</code> - caller name</dd>
+<dd><code>type</code> - caller type</dd>
+<dd><code>polymorphism</code> - amount of calling types to cache handles for</dd>
+<dt>Returns:</dt>
+<dd>a DuckTypeCallSite</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="lookupAndInvoke(java.lang.invoke.MethodHandles.Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.invoke.MethodHandle)">
+<h3>lookupAndInvoke</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/invoke/CallSite.html" title="class or interface in java.lang.invoke" class="external-link">CallSite</a></span>&nbsp;<span class="element-name">lookupAndInvoke</span><wbr><span class="parameters">(<a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/invoke/MethodHandles.Lookup.html" title="class or interface in java.lang.invoke" class="external-link">MethodHandles.Lookup</a>&nbsp;lk,
+ <a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;callerName,
+ <a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/invoke/MethodType.html" title="class or interface in java.lang.invoke" class="external-link">MethodType</a>&nbsp;callerType,
+ <a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/invoke/MethodHandle.html" title="class or interface in java.lang.invoke" class="external-link">MethodHandle</a>&nbsp;lookupHandle)</span></div>
+<div class="block">A constant call site that when its target is invoked, will call <code>lookupHandle</code> with the caller's lookup, name, method type, and the
+ arguments for that invocation to lookup the target method handle to be called for that invocation as if by <code>invoke</code>.
+ <code>lookupHandle</code> must accept a subset of arguments compatible with the caller type (as in <code>MethodHandles.foldArguments</code>)
+ and return a method handle with the same type as the caller type.
+ <br>
+ No target caching of any kind is performed. If the call site will be invoked repeatedly, consider writing a custom call site instead.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>lk</code> - caller lookup</dd>
+<dd><code>callerName</code> - caller name</dd>
+<dd><code>callerType</code> - caller type</dd>
+<dd><code>lookupHandle</code> - the method handle that will be called to lookup the target method handle to invoke.</dd>
+<dt>Returns:</dt>
+<dd>a ConstantCallSite</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="lookupAndInvokeExact(java.lang.invoke.MethodHandles.Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.invoke.MethodHandle)">
+<h3>lookupAndInvokeExact</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/invoke/CallSite.html" title="class or interface in java.lang.invoke" class="external-link">CallSite</a></span>&nbsp;<span class="element-name">lookupAndInvokeExact</span><wbr><span class="parameters">(<a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/invoke/MethodHandles.Lookup.html" title="class or interface in java.lang.invoke" class="external-link">MethodHandles.Lookup</a>&nbsp;lk,
+ <a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;callerName,
+ <a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/invoke/MethodType.html" title="class or interface in java.lang.invoke" class="external-link">MethodType</a>&nbsp;callerType,
+ <a href="https://download.java.net/java/early_access/jdk17/docs/api/java.base/java/lang/invoke/MethodHandle.html" title="class or interface in java.lang.invoke" class="external-link">MethodHandle</a>&nbsp;lookupHandle)</span></div>
+<div class="block">A constant call site that when its target is invoked, will call <code>lookupHandle</code> with the caller's lookup, name, method type, and the
+ arguments for that invocation to lookup the target method handle to be called for that invocation as if by <code>invokeExact</code>.
+ <code>lookupHandle</code> must accept a subset of arguments compatible with the caller type (as in <code>MethodHandles.foldArguments</code>)
+ and return a method handle with the same type as the caller type.
+ <br>
+ No target caching of any kind is performed. If the call site will be invoked repeatedly, consider writing a custom call site instead.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>lk</code> - caller lookup</dd>
+<dd><code>callerName</code> - caller name</dd>
+<dd><code>callerType</code> - caller type</dd>
+<dd><code>lookupHandle</code> - the method handle that will be called to lookup the target method handle to invoke.</dd>
+<dt>Returns:</dt>
+<dd>a ConstantCallSite</dd>
+</dl>
+</section>
+</li>
+</ul>
 </section>
 </li>
 </ul>

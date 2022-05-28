@@ -37,7 +37,7 @@ public class Dygenerate {
 	 * @param args Command-line aeguments.
 	 */
 	public static void main(String[] args) {
-		System.out.println("Dygenerate v0.0.1");
+		System.out.println("Dygenerate v0.1.0");
 		if (args.length == 0) {
 			usage();
 		} else {
